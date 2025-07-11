@@ -53,7 +53,7 @@ fun getAllUsers(): List<User> = transaction {
 }
 
 fun getUserSessions(email: String): List<Session> = transaction {
-    Sessions.select(Sessions.userEmail eq email).map {
+    Sessions.selectAll().where(Sessions.userEmail eq email).map {
         Session(
             id = it[Sessions.id],
             userEmail = it[Sessions.userEmail],
