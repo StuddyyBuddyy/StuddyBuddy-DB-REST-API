@@ -6,5 +6,3 @@ services:
     ports:
       - "5431:5431"
     restart: unless-stopped
-    depends_on:
-      - db
