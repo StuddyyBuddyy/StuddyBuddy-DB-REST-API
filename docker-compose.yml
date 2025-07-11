@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  appdev-backend:
+    build: .
+    ports:
+      - "5431:5431"
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: appdevdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
