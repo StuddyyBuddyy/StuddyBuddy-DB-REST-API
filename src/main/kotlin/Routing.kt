@@ -30,19 +30,17 @@ fun Application.configureRouting() {
         }
 
         // Get sessions for a user
-        get("/users/{email}/sessions") {
-            val email = call.parameters["email"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing email")
+        post("/sessions/user") {
+            val request = call.receive<Map<String, String>>()
+            val email = request["email"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing email")
             val sessions = getUserSessions(email)
             call.respond(sessions)
         }
 
+
         // Add session for user
-        post("/users/{email}/sessions") {
-            val email = call.parameters["email"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing email")
+        post("/sessions") {
             val session = call.receive<Session>()
-            if (session.userEmail != email) {
-                return@post call.respond(HttpStatusCode.BadRequest, "Email mismatch")
-            }
             insertSession(session)
             call.respond(HttpStatusCode.Created, session)
         }
